@@ -6,7 +6,7 @@ fake = Faker()
 class Payloads:
     """Данные необходимые для эндпоинтов users"""
 
-    def get_data_for_create_user(self):
+    def get_data_for_user(self):
         data = {
             "email": fake.email(),
             "password": fake.password(length=10),

@@ -11,3 +11,4 @@ class Endpoints:
     login_user = f"{HOST}/users/login"
     get_users = f"{HOST}/users"
     delete_user = lambda self, uuid: f"{HOST}/users/{uuid}"
+    update_user = lambda self, uuid: f"{HOST}/users/{uuid}"

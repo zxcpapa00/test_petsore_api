@@ -26,3 +26,10 @@ class TestUsers(BaseTest):
         user = self.api_users.create_user()
         self.api_users.delete_user(user.uuid)
         self.api_users.get_deleted_user(user.uuid)
+
+    @allure.title("Update user")
+    def test_update_user(self):
+        user_create = self.api_users.create_user()
+        user_update = self.api_users.update_user_data(user_create.uuid)
+        assert user_update.uuid == user_create.uuid
+        assert user_update != user_create

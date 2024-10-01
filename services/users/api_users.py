@@ -23,7 +23,7 @@ class UsersAPI(Helper):
         response = requests.post(
             url=self.endpoints.create_user,
             headers=self.headers.basic,
-            json=self.payloads.get_data_for_create_user()
+            json=self.payloads.get_data_for_user()
         )
         assert response.status_code == 200
         self.attach_response(response.json())
@@ -33,7 +33,7 @@ class UsersAPI(Helper):
     @allure.step("Create user for login")
     def create_user_for_login(self):
         """Регистрация пользователя для авторизации"""
-        data = self.payloads.get_data_for_create_user()
+        data = self.payloads.get_data_for_user()
         response = requests.post(
             url=self.endpoints.create_user,
             headers=self.headers.basic,
@@ -96,3 +96,16 @@ class UsersAPI(Helper):
         )
         assert response.status_code == 404
         self.attach_response(response.json())
+
+    @allure.step("Update user")
+    def update_user_data(self, uuid):
+        """Получение данных пользователя"""
+        response = requests.patch(
+            url=self.endpoints.update_user(uuid),
+            headers=self.headers.basic,
+            json=self.payloads.get_data_for_user()
+        )
+        assert response.status_code == 200
+        self.attach_response(response.json())
+        model = UserModel(**response.json())
+        return model
