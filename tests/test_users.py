@@ -1,5 +1,4 @@
 import allure
-import pytest
 
 from config.base_test import BaseTest
 
@@ -12,3 +11,18 @@ class TestUsers(BaseTest):
     def test_create_user(self):
         user = self.api_users.create_user()
         self.api_users.get_user_by_id(user.uuid)
+
+    @allure.title("Get all users")
+    def test_get_all_users(self):
+        self.api_users.get_all_users()
+
+    @allure.title("Login user")
+    def test_login_user(self):
+        email, password = self.api_users.create_user_for_login()
+        self.api_users.login_user(email, password)
+
+    @allure.title("Delete user")
+    def test_delete_user(self):
+        user = self.api_users.create_user()
+        self.api_users.delete_user(user.uuid)
+        self.api_users.get_deleted_user(user.uuid)

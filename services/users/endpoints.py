@@ -8,3 +8,6 @@ class Endpoints:
     """Эндпоинты относящиеся к users"""
     create_user = f"{HOST}/users"
     get_user_by_id = lambda self, uuid: f"{HOST}/users/{uuid}"
+    login_user = f"{HOST}/users/login"
+    get_users = f"{HOST}/users"
+    delete_user = lambda self, uuid: f"{HOST}/users/{uuid}"

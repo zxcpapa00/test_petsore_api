@@ -14,3 +14,12 @@ class UserModel(BaseModel):
             raise ValueError("Field is empty")
         else:
             return value
+
+
+class UserMeta(BaseModel):
+    total: int
+
+
+class UsersModel(BaseModel):
+    meta: UserMeta
+    users: list[UserModel]
