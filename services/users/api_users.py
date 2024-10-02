@@ -40,7 +40,8 @@ class UsersAPI(Helper):
             json=data
         )
         assert response.status_code == 200
-        return data.get("email"), data.get("password")
+        model = UserModel(**response.json())
+        return data.get("email"), data.get("password"), model.uuid
 
     @allure.step("Get user by id")
     def get_user_by_id(self, uuid):
@@ -77,6 +78,17 @@ class UsersAPI(Helper):
         self.attach_response(response.json())
         model = UserModel(**response.json())
         return model
+
+    @allure.step("Login non-existent user")
+    def login_non_existent_user(self, email, password):
+        """Авторизация не существующего пользователя"""
+        response = requests.post(
+            url=self.endpoints.login_user,
+            headers=self.headers.basic,
+            json={"email": email, "password": password}
+        )
+        assert response.status_code == 404
+        self.attach_response(response.json())
 
     @allure.step("Delete user by id")
     def delete_user(self, uuid):

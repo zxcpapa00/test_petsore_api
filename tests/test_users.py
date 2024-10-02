@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from config.base_test import BaseTest
 
@@ -18,7 +19,7 @@ class TestUsers(BaseTest):
 
     @allure.title("Login user")
     def test_login_user(self):
-        email, password = self.api_users.create_user_for_login()
+        email, password, _ = self.api_users.create_user_for_login()
         self.api_users.login_user(email, password)
 
     @allure.title("Delete user")
@@ -33,3 +34,11 @@ class TestUsers(BaseTest):
         user_update = self.api_users.update_user_data(user_create.uuid)
         assert user_update.uuid == user_create.uuid
         assert user_update != user_create
+
+    @allure.title("Login deleted user")
+    @pytest.mark.negative_cases
+    def test_login_deleted_user(self):
+        email, password, user_uuid = self.api_users.create_user_for_login()
+        self.api_users.login_user(email, password)
+        self.api_users.delete_user(user_uuid)
+        self.api_users.login_non_existent_user(email, password)
