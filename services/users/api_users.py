@@ -30,6 +30,19 @@ class UsersAPI(Helper):
         model = UserModel(**response.json())
         return model
 
+    @allure.step("Create static user")
+    def create_static_user(self):
+        """Регистрация пользователя со статическими данными"""
+        response = requests.post(
+            url=self.endpoints.create_user,
+            headers=self.headers.basic,
+            json=self.payloads.session_data_for_user
+        )
+        assert response.status_code == 200
+        self.attach_response(response.json())
+        model = UserModel(**response.json())
+        return model
+
     @allure.step("Create user for login")
     def create_user_for_login(self):
         """Регистрация пользователя для авторизации"""
@@ -90,6 +103,17 @@ class UsersAPI(Helper):
         assert response.status_code == 404
         self.attach_response(response.json())
 
+    @allure.step("Login user with random data")
+    def login_user_with_random_data(self):
+        """Авторизация пользователя со случайными данными"""
+        response = requests.post(
+            url=self.endpoints.login_user,
+            headers=self.headers.basic,
+            json=self.payloads.get_data_for_user()
+        )
+        assert response.status_code == 404
+        self.attach_response(response.json())
+
     @allure.step("Delete user by id")
     def delete_user(self, uuid):
         """Удаление пользователя по uuid"""
@@ -121,3 +145,14 @@ class UsersAPI(Helper):
         self.attach_response(response.json())
         model = UserModel(**response.json())
         return model
+
+    @allure.step("Create existed user")
+    def create_existing_user(self):
+        """Регистрация существующего пользователя"""
+        response = requests.post(
+            url=self.endpoints.create_user,
+            headers=self.headers.basic,
+            json=self.payloads.session_data_for_user
+        )
+        assert response.status_code == 409
+        self.attach_response(response.json())

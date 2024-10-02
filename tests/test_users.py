@@ -42,3 +42,14 @@ class TestUsers(BaseTest):
         self.api_users.login_user(email, password)
         self.api_users.delete_user(user_uuid)
         self.api_users.login_non_existent_user(email, password)
+
+    @allure.title("Login user with random data")
+    @pytest.mark.negative_cases
+    def test_login_user_with_random_data(self):
+        self.api_users.login_user_with_random_data()
+
+    @allure.title("Create existing user")
+    @pytest.mark.negative_cases
+    def test_create_existing_user(self):
+        self.api_users.create_static_user()
+        self.api_users.create_existing_user()
